@@ -5,6 +5,7 @@ import { apiRequest } from "../api";
 export default function Login() {
   const navigate = useNavigate();
   const [isSignUp, setIsSignUp] = useState(false);
+  const [role, setRole] = useState("student");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,16 +16,22 @@ export default function Login() {
     setError("");
 
     const endpoint = isSignUp ? "/auth/register" : "/auth/login";
-    const payload = isSignUp ? { name, email, password } : { email, password };
+    const payload = isSignUp
+      ? { name, email, password, role }
+      : { email, password };
 
     try {
       const data = await apiRequest(endpoint, "POST", payload);
-      
-      // Save token and user info to localStorage
+
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      navigate("/dashboard");
+      // Redirect based on role
+      if (data.user.role === "lecturer") {
+        navigate("/instructor");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (err) {
       setError(err.message);
     }
@@ -55,7 +62,7 @@ export default function Login() {
           </h1>
           <p className="mt-2 font-sans text-sm text-ink/60">
             {isSignUp
-              ? "Sign up to start learning with Fieldnote."
+              ? "Sign up to start teaching or learning on Fieldnote."
               : "Sign in to pick up where you left off."}
           </p>
 
@@ -67,17 +74,47 @@ export default function Login() {
 
           <div className="mt-6 flex flex-col gap-5">
             {isSignUp && (
-              <label className="flex flex-col gap-2">
-                <span className="font-sans text-sm text-ink/70">Full Name</span>
-                <input
-                  type="text"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Jane Doe"
-                  className="border border-line bg-transparent px-3 py-2.5 font-sans text-sm text-ink outline-none transition-colors focus:border-ink"
-                />
-              </label>
+              <>
+                <div className="flex flex-col gap-2">
+                  <span className="font-sans text-sm text-ink/70">I am joining as a:</span>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setRole("student")}
+                      className={`border py-2 font-sans text-xs transition-colors ${
+                        role === "student"
+                          ? "border-ink bg-ink text-paper"
+                          : "border-line text-ink/70 hover:border-ink"
+                      }`}
+                    >
+                      Student
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setRole("lecturer")}
+                      className={`border py-2 font-sans text-xs transition-colors ${
+                        role === "lecturer"
+                          ? "border-ink bg-ink text-paper"
+                          : "border-line text-ink/70 hover:border-ink"
+                      }`}
+                    >
+                      Lecturer
+                    </button>
+                  </div>
+                </div>
+
+                <label className="flex flex-col gap-2">
+                  <span className="font-sans text-sm text-ink/70">Full Name</span>
+                  <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Jane Doe"
+                    className="border border-line bg-transparent px-3 py-2.5 font-sans text-sm text-ink outline-none transition-colors focus:border-ink"
+                  />
+                </label>
+              </>
             )}
 
             <label className="flex flex-col gap-2">
@@ -108,7 +145,7 @@ export default function Login() {
               type="submit"
               className="mt-2 bg-ink py-3 font-sans text-sm text-paper transition-colors hover:bg-brass"
             >
-              {isSignUp ? "Sign up" : "Sign in"}
+              {isSignUp ? `Sign up as ${role}` : "Sign in"}
             </button>
           </div>
 
