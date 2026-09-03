@@ -62,8 +62,8 @@ export default function Login() {
           </h1>
           <p className="mt-2 font-sans text-sm text-ink/60">
             {isSignUp
-              ? "Sign up to start teaching or learning on Fieldnote."
-              : "Sign in to pick up where you left off."}
+              ? "Sign up to start teaching."
+              : "Sign in to start learning."}
           </p>
 
           {error && (
@@ -76,7 +76,7 @@ export default function Login() {
             {isSignUp && (
               <>
                 <div className="flex flex-col gap-2">
-                  <span className="font-sans text-sm text-ink/70">I am joining as a:</span>
+                  <span className="font-sans text-sm text-ink/70">Role:</span>
                   <div className="grid grid-cols-2 gap-3">
                     <button
                       type="button"
