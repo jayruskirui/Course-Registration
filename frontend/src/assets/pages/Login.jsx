@@ -3,11 +3,20 @@ import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const navigate = useNavigate();
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
+    if (isSignUp) {
+      // Handle sign up logic
+      console.log("Signing up:", { name, email, password });
+    } else {
+      // Handle sign in logic
+      console.log("Signing in:", { email, password });
+    }
     navigate("/dashboard");
   }
 
@@ -35,12 +44,30 @@ export default function Login() {
       {/* Right: form */}
       <div className="flex flex-1 items-center justify-center px-6 py-14 sm:px-12">
         <form onSubmit={handleSubmit} className="w-full max-w-sm">
-          <h1 className="font-serif text-2xl text-ink">Welcome back</h1>
+          <h1 className="font-serif text-2xl text-ink">
+            {isSignUp ? "Create an account" : "Welcome back"}
+          </h1>
           <p className="mt-2 font-sans text-sm text-ink/60">
-            Sign in to pick up where you left off.
+            {isSignUp
+              ? "Sign up to start learning with Fieldnote."
+              : "Sign in to pick up where you left off."}
           </p>
 
           <div className="mt-8 flex flex-col gap-5">
+            {isSignUp && (
+              <label className="flex flex-col gap-2">
+                <span className="font-sans text-sm text-ink/70">Full Name</span>
+                <input
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Jane Doe"
+                  className="border border-line bg-transparent px-3 py-2.5 font-sans text-sm text-ink outline-none transition-colors focus:border-ink"
+                />
+              </label>
+            )}
+
             <label className="flex flex-col gap-2">
               <span className="font-sans text-sm text-ink/70">Email</span>
               <input
@@ -69,13 +96,34 @@ export default function Login() {
               type="submit"
               className="mt-2 bg-ink py-3 font-sans text-sm text-paper transition-colors hover:bg-brass"
             >
-              Sign in
+              {isSignUp ? "Sign up" : "Sign in"}
             </button>
           </div>
 
           <p className="mt-6 font-sans text-sm text-ink/50">
-            New here?{" "}
-            <span className="cursor-pointer text-brass">Create an account</span>
+            {isSignUp ? (
+              <>
+                Already registered?{" "}
+                <button
+                  type="button"
+                  onClick={() => setIsSignUp(false)}
+                  className="cursor-pointer text-brass hover:underline"
+                >
+                  Sign in
+                </button>
+              </>
+            ) : (
+              <>
+                New here?{" "}
+                <button
+                  type="button"
+                  onClick={() => setIsSignUp(true)}
+                  className="cursor-pointer text-brass hover:underline"
+                >
+                  Create an account
+                </button>
+              </>
+            )}
           </p>
         </form>
       </div>
