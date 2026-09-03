@@ -2,8 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import pool from "./config/db.js"; 
-// import authRoutes from "./routes/authRoutes.js";
-// import courseRoutes from "./routes/courseRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
+import courseRoutes from "./routes/courseRoutes.js";
 
 dotenv.config();
 
@@ -13,8 +13,8 @@ app.use(cors());
 app.use(express.json());
 
 // API Routes
-// app.use("/api/auth", authRoutes);
-// app.use("/api/courses", courseRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/courses", courseRoutes);
 
 app.get("/", (req, res) => {
   res.send("Student Course API is running...");
