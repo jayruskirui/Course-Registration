@@ -6,8 +6,15 @@ import { Clock } from "lucide-react";
  *   progress?: number (0-100, only shown when provided)
  * }
  */
-export default function CourseCard({ course, onAction }) {
-  const { title, instructor, category, duration, level, progress } = course;
+export default function CourseCard({ course = {}, onAction }) {
+  const {
+    title = "Untitled Course",
+    instructor = "Unknown Instructor",
+    category = "General",
+    duration = "Self-paced",
+    level = "All levels",
+    progress,
+  } = course;
 
   return (
     <article className="group flex flex-col border border-line bg-white transition-colors hover:border-ink">

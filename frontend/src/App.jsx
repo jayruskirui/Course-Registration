@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
-import Login from './assets/pages/Login'
-import Dashboard from './assets/pages/Dashboard'
-import Courses from './assets/pages/Courses'
+import Login from './pages/Login'
+import Dashboard from './pages/Dashboard'
+import Courses from './pages/Courses'
 import Navbar from './components/Navbar'
 
 function App() {

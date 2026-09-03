@@ -19,7 +19,16 @@ export default function CourseModal({ course, onClose }) {
 
   if (!course) return null;
 
-  const { title, instructor, category, duration, level, progress } = course;
+  const {
+    title = "Untitled Course",
+    instructor = "Unknown Instructor",
+    category = "General",
+    duration = "Self-paced",
+    level = "All levels",
+    progress,
+    description,
+  } = course;
+
   const lessons = lessonsByCategory[category] || [
     "Introduction",
     "Core concepts",
@@ -78,9 +87,8 @@ export default function CourseModal({ course, onClose }) {
           )}
 
           <p className="mt-5 font-sans text-sm leading-relaxed text-ink/70">
-            This preview covers what to expect from {title.toLowerCase()}: how the
-            course is structured, the pace it moves at, and the kind of work
-            you'll be doing between lessons.
+            {description ||
+              `This preview covers what to expect from ${title.toLowerCase()}: how the course is structured, the pace it moves at, and the kind of work you'll be doing between lessons.`}
           </p>
 
           <div className="mt-5 border-t border-line pt-4">
